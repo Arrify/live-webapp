@@ -111,16 +111,16 @@
                                  id="land_cost_table">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="35%" >
                                         Land Costs
                                     </th>
-                                    <th>
+                                    <th width="15%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Subtotal($)
                                     </th>
                                     <!--<th>
@@ -138,7 +138,7 @@
                                             <div v-show="landcost.edit == false">
                                                 <p> {{landcost.percentageValue}} </p>
                                             </div>
-                                            <input v-show="landcost.edit == true" v-model="landcost.percentageValue"
+                                            <input class="c-input" v-show="landcost.edit == true" v-model="landcost.percentageValue"
                                                    onchange="editTableField(index,true)"
                                                    v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
                                                    @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
@@ -148,14 +148,14 @@
                                             <div v-show="landcost.edit == false">
                                                 <p> {{landcost.lumpSum}} </p>
                                             </div>
-                                            <input v-show="landcost.edit == true" v-model="landcost.lumpSum"
+                                            <input  class="c-input" v-show="landcost.edit == true" v-model="landcost.lumpSum"
                                                    @change="editTableField(index,true)"
                                                    v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
                                                    @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
                                                    type="text">
                                         </td>
                                         <td>
-                                            <div>
+                                            <div class="total">
                                                 <p> {{landcost.subtotal}} </p>
                                             </div>
                                             <!--<input v-show="user.edit == true" v-model="user.subtotal"
@@ -175,10 +175,8 @@
                                         </td>-->
                                     </tr>
                                     <tr>
-                                        <td>Total</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>{{land_cost_total}}</td>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{land_cost_total}}</td>
                                     </tr>
                                     <!--<tr>
                                         <td>Estimated Land Price (Value)</td>
@@ -242,73 +240,29 @@
                                  id="da_professional_fees_table">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         DA professional fees
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Subtotal($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Action
                                     </th>
                                     </thead>
                                     <tbody>
 
-                                    <!--<tr>
-                                        <td>Town Planning Report</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Engineering Plans</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Architectural Plans</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Landscape Plans</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ecology report</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Deatil Survey & Plan of Proposed Subdivision</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td class="ofWhiteBackgroundColor">0.00</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Total</b></td>
-                                        <td></td>
-                                        <td>0.00</td>
-                                        <td></td>
-                                    </tr>-->
 
                                     <tr v-for='(user, index) in da_professional_fees'>
                                         <td @click="user.edit = true">
-                                            <!--<div>
-                                                <p> {{user.label}} </p>
-                                            </div>-->
+
                                             <div v-show="user.edit == false">
                                                 <p> {{user.label}} </p>
                                             </div>
-                                            <input v-show="user.edit == true" v-model="user.label"
+                                            <input class="c-input" v-show="user.edit == true" v-model="user.label"
                                                    @change="editTableField(index,true)"
                                                    v-on:blur="user.edit=false; $emit('editTableField(index,true)')"
                                                    @keyup.enter="user.edit=false; $emit('editTableField(index,true)')"
@@ -318,14 +272,14 @@
                                             <div v-show="user.edit == false">
                                                 <p> {{user.lumpSum}} </p>
                                             </div>
-                                            <input v-show="user.edit == true" v-model="user.lumpSum"
+                                            <input class="c-input" v-show="user.edit == true" v-model="user.lumpSum"
                                                    @change="editTableField(index,true)"
                                                    v-on:blur="user.edit=false;"
                                                    @keyup.enter="user.edit=false;"
                                                    type="text">
                                         </td>
                                         <td>
-                                            <div>
+                                            <div  class="total">
                                                 <p> {{user.subtotal}} </p>
                                             </div>
 
@@ -352,9 +306,8 @@
                                         </td>-->
                                     </tr>
                                     <tr>
-                                        <td>Total</td>
-                                        <td></td>
-                                        <td>{{da_professional_fees_total}}</td>
+                                        <td colspan="2" class="total">Total</td>
+                                        <td  class="total">{{da_professional_fees_total}}</td>
                                         <td></td>
                                     </tr>
                                     <!--<tr v-for='(user, index) in land_cost'>
@@ -917,4 +870,17 @@ var da_professional_fees_table = new Vue({
 
 
 </script>
+
+<style>
+    .c-input {
+        width: 100%;
+    }
+
+    .total{
+        font-weight: bold;
+    }
+
+</style>
+
+
 </html>
