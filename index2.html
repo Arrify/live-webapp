@@ -1,0 +1,920 @@
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Feasibility Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Template Main CSS File -->
+    <link href="fontAwesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css"
+          integrity="sha384-wESLQ85D6gbsF459vf1CiZ2+rr+CsxRY0RpiF1tLlQpDnAgg6rwdsUF1+Ics2bni" crossorigin="anonymous">
+    <link href="css/main.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+            integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+            crossorigin="anonymous"></script>
+
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbar-dark bg-dark"
+         style="background-color: #000 !important;">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarTogglerDemo" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="#">
+            <img src="img/logo_negativ.fw@2x.png" style="height: 62px;">
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item active px-3 text-middle">
+                    <span class="navbar-text pp-text">Precise <br/> Planning</span>
+                </li>
+
+                <li class="nav-item active text-middle">
+                    <div class="vline"></div>
+                </li>
+
+                <li class="nav-item active px-3 text-middle" style="min-width: 350px;">
+                    <span class="navbar-text fc-text">Feasibility Calculator</span>
+                    <span class="badge badge-primary mx-3">FREE</span>
+                </li>
+
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active px-3 text-middle" style="min-width: 100px;">
+                    <span class="navbar-text fc-text text-primary"> (02) 7227 9500</span>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div style=" margin-top:88px;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ">
+                <h1 style="font-weight: bold;"><a href="#" class="textBlue"> <u>High</u> level </a> project feasibility
+                    study </h1></br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 ">
+                <b>Condo development</b><br>
+                Prepared by <b> Jack Bulfin</b>, on 10/29/2020
+            </div>
+            <div class="col-md-6 ">
+                <div class="float-right">
+                    <div>
+                        <div class="d-inline-block">
+                            <img src="img/logo_negativ.fw@2x.png" style="height: 50px;">
+                        </div>
+                        <div class="d-inline-block">
+                            <span style="Color:Black"><b>Precise <br/>
+                                Planning</b></span>
+                        </div>
+                    </div>
+                    <div class="d-block">
+                        <span style="Color:#3C4043">© Precise Planning 2020</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;"
+                                 id="land_cost_table">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Land Costs
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    <!--<th>
+                                        Action
+                                    </th>-->
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for='(landcost, index) in land_cost'>
+                                        <td>
+                                            <div>
+                                                <p> {{landcost.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="landcost.edit = true">
+                                            <div v-show="landcost.edit == false">
+                                                <p> {{landcost.percentageValue}} </p>
+                                            </div>
+                                            <input v-show="landcost.edit == true" v-model="landcost.percentageValue"
+                                                   onchange="editTableField(index,true)"
+                                                   v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
+                                                   @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
+                                                   type="text" onchange="">
+                                        </td>
+                                        <td @click="landcost.edit = true">
+                                            <div v-show="landcost.edit == false">
+                                                <p> {{landcost.lumpSum}} </p>
+                                            </div>
+                                            <input v-show="landcost.edit == true" v-model="landcost.lumpSum"
+                                                   @change="editTableField(index,true)"
+                                                   v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
+                                                   @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p> {{landcost.subtotal}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{land_cost_total}}</td>
+                                    </tr>
+                                    <!--<tr>
+                                        <td>Estimated Land Price (Value)</td>
+                                        <td></td>
+                                        <td>1,000,000.00</td>
+                                        <td>1,000,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stamp Duty</td>
+                                        <td></td>
+                                        <td>100,000.00</td>
+                                        <td>100,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Real Estate Agent Fees</td>
+                                        <td>2</td>
+                                        <td></td>
+                                        <td>20,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Legal Fees</td>
+                                        <td></td>
+                                        <td>10,000.00</td>
+                                        <td>10,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total</b></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><b>1,130,000.00</b></td>
+                                    </tr>-->
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-6 ">
+                                        <div>
+                                            <div style="border:1px solid #1A73E8; border-radius:50%; height:33px; width:33px;">
+                                                <i class="fas fa-ellipsis-v"
+                                                   style="color: #1A73E8; padding-top: 8px; padding-left: 12px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <div class="float-right">
+                                            <i class="fas fa-check-circle" style="color: #1A73E8;"></i> Completed
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;"
+                                 id="da_professional_fees_table">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        DA professional fees
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                    </thead>
+                                    <tbody>
+
+                                    <!--<tr>
+                                        <td>Town Planning Report</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Engineering Plans</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Architectural Plans</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Landscape Plans</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ecology report</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Deatil Survey & Plan of Proposed Subdivision</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td class="ofWhiteBackgroundColor">0.00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total</b></td>
+                                        <td></td>
+                                        <td>0.00</td>
+                                        <td></td>
+                                    </tr>-->
+
+                                    <tr v-for='(user, index) in da_professional_fees'>
+                                        <td @click="user.edit = true">
+                                            <!--<div>
+                                                <p> {{user.label}} </p>
+                                            </div>-->
+                                            <div v-show="user.edit == false">
+                                                <p> {{user.label}} </p>
+                                            </div>
+                                            <input v-show="user.edit == true" v-model="user.label"
+                                                   @change="editTableField(index,true)"
+                                                   v-on:blur="user.edit=false; $emit('editTableField(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editTableField(index,true)')"
+                                                   type="text">
+                                        </td>
+                                        <td @click="user.edit = true">
+                                            <div v-show="user.edit == false">
+                                                <p> {{user.lumpSum}} </p>
+                                            </div>
+                                            <input v-show="user.edit == true" v-model="user.lumpSum"
+                                                   @change="editTableField(index,true)"
+                                                   v-on:blur="user.edit=false;"
+                                                   @keyup.enter="user.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p> {{user.subtotal}} </p>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editModeVisible(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editModeVisible(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="deleteRow(index)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td></td>
+                                        <td>{{da_professional_fees_total}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <!--<tr v-for='(user, index) in land_cost'>
+                                        <td>
+                                            <div v-show="user.edit == false">
+                                                <p @dblclick="user.edit = true"> {{user.DAname}} </p>
+                                            </div>
+                                            <input v-show="user.edit == true" v-model="user.DAname"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">
+                                            &lt;!&ndash;<p v-if="user.edit===false" style="display: inline;">{{user.DAname}}</p>
+                                            <input v-if="user.edit===true" v-model="user.DAname" class="form-control" type="text"/>
+                                            <button v-if="user.editMode===true" class="btn" @click="editModeVisible(index,true)" style="float: right;"><i class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn" @click="editModeVisible(index,false)" style="float: right;"><i class="fa fa-save"></i></button>&ndash;&gt;
+                                        </td>
+                                        <td>
+                                            <div v-show="user.edit == false">
+                                                <p @dblclick="user.edit = true"> {{user.lumpsum}} </p>
+                                            </div>
+                                            <input v-show="user.edit == true" v-model="user.lumpsum"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">
+                                            &lt;!&ndash;                                            <input v-model="user.lumpsum" class="form-control" type="text" />&ndash;&gt;
+                                            &lt;!&ndash;<p v-if="user.edit===false" style="display: inline;">{{user.lumpsum}}</p>
+                                            <input v-if="user.edit===true" v-model="user.lumpsum" class="form-control" type="text"/>
+                                            <button v-if="user.editMode===true" class="btn" @click="editModeVisible(index,true)" style="float: right;"><i class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn" @click="editModeVisible(index,false)" style="float: right;"><i class="fa fa-save"></i></button>&ndash;&gt;
+                                        </td>
+                                        <td>
+                                            <div v-show="user.edit == false">
+                                                <p @dblclick="user.edit = true"> {{user.subtotal}} </p>
+                                            </div>
+                                            <input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">
+                                            &lt;!&ndash;                                            <input v-model="user.subtotal" class="form-control" type="text"/>
+                                                                                        {{user.subtotal}}&ndash;&gt;
+                                        </td>
+                                        <td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editModeVisible(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editModeVisible(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="deleteRow(index)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>
+                                    </tr>-->
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-3 ">
+                                        <div>
+                                            <div style="border:1px solid #1A73E8; border-radius:50%; height:33px; width:33px;">
+                                                <i class="fas fa-ellipsis-v"
+                                                   style="color: #1A73E8; padding-top: 8px; padding-left: 12px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 ">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    @click="addRow" style="width: 120;"><b> + Add row </b>
+                                            </button>
+                                            <button type="button" class="btn btn-primary" style="width: 120;">Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        DA professional fee contingency
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        CC professional fees
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        CC professional fee contingency
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Construction costs
+                                    </th>
+                                    <th>
+                                        Qty
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Project Management Fees
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Construction Cost Contingency
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        SS professional fees
+                                    </th>
+                                    <th>
+                                        Lots
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        SS professional Fee Contingency
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Sales
+                                    </th>
+                                    <th>
+                                        Lots
+                                    </th>
+                                    <th>
+                                        Price($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Marketing
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Total projected cost
+                                    </th>
+                                    <th>
+                                        $ 0.00
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Total projected Revenue
+                                    </th>
+                                    <th>
+                                        $ 0.00
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th>
+                                        Finance Costs
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                    <th>
+                                        Lump sum($)
+                                    </th>
+                                    <th>
+                                        Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+var land_cost_table = new Vue({
+
+		el: '#land_cost_table',
+		mounted:function(){
+        this.editTableField() //method1 will execute at pageload
+        },
+		data: {
+		    land_cost_total:0,
+		    land_cost_subtotal:0,
+			land_cost: [{label:'Estimated Land Price (Value)', percentageValue:'',lumpSum:1000000.00,subtotal:'', edit:false,editMode:true},
+			            {label:'Stamp Duty', percentageValue:'',lumpSum:100000.00,subtotal:'', edit:false,editMode:true},
+			            {label:'Real Estate Agent Fees', percentageValue:2,lumpSum:'',subtotal:'', edit:false,editMode:true},
+			            {label:'Legal Fees', percentageValue:'',lumpSum:10000.00,subtotal:'', edit:false,editMode:true}]},
+		methods: {
+		    editTableField: function(index, isBoolean) {
+                    this.land_cost_total = 0;
+					console.log('editTableField called',index,isBoolean);
+					//console.log('editTableField ',this.land_cost[index]);
+					land_cost_subtotal = this.land_cost[0].lumpSum;
+					for(cost of this.land_cost){
+					    if(cost.percentageValue == ''){
+                            cost.subtotal = cost.lumpSum;
+					    } else {
+					        cost.subtotal = cost.percentageValue*land_cost_subtotal/100;
+					    }
+					    this.land_cost_total = this.land_cost_total + +cost.subtotal;
+                    }
+			}
+		}
+	})
+
+var da_professional_fees_table = new Vue({
+
+		el: '#da_professional_fees_table',
+		mounted:function(){
+        this.editTableField() //method1 will execute at pageload
+        },
+		data: {
+		    da_professional_fees_total:0,
+		    da_professional_fees_subtotal:0,
+			da_professional_fees: [{label:'Town Planning Report', lumpSum:6000000.00,subtotal:'', edit:false},
+			            {label:'Engineering Plans', lumpSum:900000.00,subtotal:'', edit:false},
+			            {label:'Architectural Plans', lumpSum:20000,subtotal:'', edit:false},
+			            {label:'Landscape Plans', lumpSum:50000.00,subtotal:'', edit:false},
+			            {label:'Ecology report', lumpSum:80000.00,subtotal:'', edit:false},
+			            {label:'Deatil Survey & Plan of Proposed Subdivision', lumpSum:10000.00,subtotal:'', edit:false}]},
+		methods: {
+		    addRow: function() {
+					this.da_professional_fees.push({label:'', lumpsum:'', subtotal:'', edit:true});
+					//this.land_cost.push({label:'',lumpsum:'',subtotal:'', edit:true, editMode:false});
+					console.log('add row called');
+			},
+			deleteRow(index){
+				this.da_professional_fees.splice(index,1);
+			},
+		    editTableField: function(index, isBoolean) {
+                    this.da_professional_fees_total = 0;
+					console.log('editTableField called',index,isBoolean);
+					//console.log('editTableField ',this.land_cost[index]);
+					da_professional_fees_subtotal = this.da_professional_fees[0].lumpSum;
+					for(cost of this.da_professional_fees){
+					    if(cost.lumpSum != 'NaN'){
+					        cost.subtotal = cost.lumpSum;
+					    this.da_professional_fees_total = this.da_professional_fees_total + +cost.subtotal;
+					    }
+                    }
+			}
+		}
+	})
+
+/*var app = new Vue({
+		el: '#app',
+		data: {
+			users:[],
+
+			land_cost: [{DAname:'test', lumpsum:'testsum',subtotal:'testsub', edit:false,editMode:true}]
+		},
+		methods: {
+			addRow: function() {
+					this.users.push({DAname:'',lumpsum:'',subtotal:''});
+					this.land_cost.push({DAname:'',lumpsum:'',subtotal:'', edit:true, editMode:false});
+					console.log('add row called');
+			},
+			deleteRow(index){
+				this.land_cost.splice(index,1);
+			},
+			editModeVisible(index, e){
+
+				console.log('index ',index);
+
+				this.land_cost[index].editMode = !e;
+				this.land_cost[index].edit = e;
+
+			}
+		}
+	})*/
+
+
+
+
+</script>
+</html>
