@@ -73,7 +73,7 @@
 
 <div style=" margin-top:88px;">
 
-    <div class="container">
+    <div class="container" id="data_table">
         <div class="row">
             <div class="col-md-12 ">
                 <h1 style="font-weight: bold;"><a href="#" class="textBlue"> <u>High</u> level </a> project feasibility
@@ -107,11 +107,10 @@
                 <div class="row">
                     <div class="col-md-12 ">
                         <div class="ofWhiteBackgroundColor" style="padding:35px">
-                            <div class="table-responsive" style="background-color: white; padding:35px;"
-                                 id="land_cost_table">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th width="35%" >
+                                    <th width="35%">
                                         Land Costs
                                     </th>
                                     <th width="15%">
@@ -138,25 +137,25 @@
                                             <div v-show="landcost.edit == false">
                                                 <p> {{landcost.percentageValue}} </p>
                                             </div>
-                                            <input class="c-input" v-show="landcost.edit == true" v-model="landcost.percentageValue"
-                                                   onchange="editTableField(index,true)"
-                                                   v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
-                                                   @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
-                                                   type="text" onchange="">
+                                            <input class="c-input" v-show="landcost.edit == true"
+                                                   v-model="landcost.percentageValue"
+                                                   v-on:blur="landcost.edit=false;"
+                                                   @keyup.enter="landcost.edit=false;"
+                                                   type="text">
                                         </td>
                                         <td @click="landcost.edit = true">
                                             <div v-show="landcost.edit == false">
                                                 <p> {{landcost.lumpSum}} </p>
                                             </div>
-                                            <input  class="c-input" v-show="landcost.edit == true" v-model="landcost.lumpSum"
-                                                   @change="editTableField(index,true)"
-                                                   v-on:blur="landcost.edit=false; $emit('editTableField(index,true)')"
-                                                   @keyup.enter="landcost.edit=false; $emit('editTableField(index,true)')"
+                                            <input class="c-input" v-show="landcost.edit == true"
+                                                   v-model="landcost.lumpSum"
+                                                   v-on:blur="landcost.edit=false;"
+                                                   @keyup.enter="landcost.edit=false;"
                                                    type="text">
                                         </td>
                                         <td>
                                             <div class="total">
-                                                <p> {{landcost.subtotal}} </p>
+                                                <p> {{calculate_Subtotal(landcost.percentageValue,landcost.lumpSum,land_cost[0].lumpSum)}} </p>
                                             </div>
                                             <!--<input v-show="user.edit == true" v-model="user.subtotal"
                                                    v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
@@ -176,7 +175,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3" class="total">Total</td>
-                                        <td class="total">{{land_cost_total}}</td>
+                                        <td class="total">{{totalLandCost}}</td>
                                     </tr>
                                     <!--<tr>
                                         <td>Estimated Land Price (Value)</td>
@@ -236,8 +235,7 @@
                 <div class="row">
                     <div class="col-md-12 ">
                         <div class="ofWhiteBackgroundColor" style="padding:35px">
-                            <div class="table-responsive" style="background-color: white; padding:35px;"
-                                 id="da_professional_fees_table">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
                                     <th width="40%">
@@ -256,39 +254,39 @@
                                     <tbody>
 
 
-                                    <tr v-for='(user, index) in da_professional_fees'>
-                                        <td @click="user.edit = true">
+                                    <tr v-for='(dpfTableData, index) in da_professional_fees'>
+                                        <td @click="dpfTableData.edit = true">
 
-                                            <div v-show="user.edit == false">
-                                                <p> {{user.label}} </p>
+                                            <div v-show="dpfTableData.edit == false">
+                                                <p> {{dpfTableData.label}} </p>
                                             </div>
-                                            <input class="c-input" v-show="user.edit == true" v-model="user.label"
-                                                   @change="editTableField(index,true)"
-                                                   v-on:blur="user.edit=false; $emit('editTableField(index,true)')"
-                                                   @keyup.enter="user.edit=false; $emit('editTableField(index,true)')"
+                                            <input class="c-input" v-show="dpfTableData.edit == true"
+                                                   v-model="dpfTableData.label"
+                                                   v-on:blur="dpfTableData.edit=false;"
+                                                   @keyup.enter="dpfTableData.edit=false;"
                                                    type="text">
                                         </td>
-                                        <td @click="user.edit = true">
-                                            <div v-show="user.edit == false">
-                                                <p> {{user.lumpSum}} </p>
+                                        <td @click="dpfTableData.edit = true">
+                                            <div v-show="dpfTableData.edit == false">
+                                                <p> {{dpfTableData.lumpSum}} </p>
                                             </div>
-                                            <input class="c-input" v-show="user.edit == true" v-model="user.lumpSum"
-                                                   @change="editTableField(index,true)"
-                                                   v-on:blur="user.edit=false;"
-                                                   @keyup.enter="user.edit=false;"
+                                            <input class="c-input" v-show="dpfTableData.edit == true"
+                                                   v-model="dpfTableData.lumpSum"
+                                                   v-on:blur="dpfTableData.edit=false;"
+                                                   @keyup.enter="dpfTableData.edit=false;"
                                                    type="text">
                                         </td>
                                         <td>
-                                            <div  class="total">
-                                                <p> {{user.subtotal}} </p>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal('',dpfTableData.lumpSum,0)}} </p>
                                             </div>
 
                                         </td>
                                         <td>
-                                            <button v-if="user.editMode===true" class="btn"
+                                            <button v-if="dpfTableData.editMode===true" class="btn"
                                                     @click="editModeVisible(index,true)" style="float: right;"><i
                                                     class="fa fa-edit"></i></button>
-                                            <button v-if="user.editMode===false" class="btn"
+                                            <button v-if="dpfTableData.editMode===false" class="btn"
                                                     @click="editModeVisible(index,false)" style="float: right;"><i
                                                     class="fa fa-save"></i></button>
                                             <button class="btn" @click="deleteRow(index)" style="float: right;"><i
@@ -307,7 +305,9 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="total">Total</td>
-                                        <td  class="total">{{da_professional_fees_total}}</td>
+                                        <td class="total" id="da_professional_fees_total_data">
+                                            {{da_professional_fees_total}}
+                                        </td>
                                         <td></td>
                                     </tr>
                                     <!--<tr v-for='(user, index) in land_cost'>
@@ -396,20 +396,66 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         DA professional fee contingency
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(dpfcTableData, index) in da_professional_fee_contingency'>
+                                        <td>
+                                            <div>
+                                                <p> {{dpfcTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="dpfcTableData.edit = true">
+                                            <div v-show="dpfcTableData.edit == false">
+                                                <p> {{dpfcTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="dpfcTableData.edit == true"
+                                                   v-model="dpfcTableData.percentageValue"
+                                                   v-on:blur="dpfcTableData.edit=false;"
+                                                   @keyup.enter="dpfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="dpfcTableData.edit = true">
+                                            <div v-show="dpfcTableData.edit == false">
+                                                <p> {{dpfcTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="dpfcTableData.edit == true"
+                                                   v-model="dpfcTableData.lumpSum"
+                                                   v-on:blur="dpfcTableData.edit=false;"
+                                                   @keyup.enter="dpfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{da_professional_fee_contingency_total}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -426,17 +472,62 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         CC professional fees
                                     </th>
-                                    <th>
+                                    <th width="25%">
+                                    </th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(cpfTableData, index) in cc_professional_fees'>
+                                        <td @click="cpfTableData.edit = true" colspan="2">
+
+                                            <div v-show="cpfTableData.edit == false">
+                                                <p> {{cpfTableData.label}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cpfTableData.edit == true"
+                                                   v-model="cpfTableData.label"
+                                                   v-on:blur="cpfTableData.edit=false;"
+                                                   @keyup.enter="cpfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="cpfTableData.edit = true">
+                                            <div v-show="cpfTableData.edit == false">
+                                                <p> {{cpfTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cpfTableData.edit == true"
+                                                   v-model="cpfTableData.lumpSum"
+                                                   v-on:blur="cpfTableData.edit=false;"
+                                                   @keyup.enter="cpfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal('',cpfTableData.lumpSum,0)}} </p>
+                                            </div>
+
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{cc_professional_fees_total}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -453,20 +544,66 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         CC professional fee contingency
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(cpfcTableData, index) in cc_professional_fee_contingency'>
+                                        <td>
+                                            <div>
+                                                <p> {{cpfcTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="cpfcTableData.edit = true">
+                                            <div v-show="cpfcTableData.edit == false">
+                                                <p> {{cpfcTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cpfcTableData.edit == true"
+                                                   v-model="cpfcTableData.percentageValue"
+                                                   v-on:blur="cpfcTableData.edit=false;"
+                                                   @keyup.enter="cpfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="cpfcTableData.edit = true">
+                                            <div v-show="cpfcTableData.edit == false">
+                                                <p> {{cpfcTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cpfcTableData.edit == true"
+                                                   v-model="cpfcTableData.lumpSum"
+                                                   v-on:blur="cpfcTableData.edit=false;"
+                                                   @keyup.enter="cpfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{cc_professional_fee_contingency_total}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -483,20 +620,67 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Construction costs
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Qty
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(ccTableData, index) in construction_costs'>
+                                        <td>
+                                            <div>
+                                                <p> {{ccTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="ccTableData.edit = true">
+                                            <div v-show="ccTableData.edit == false">
+                                                <p> {{ccTableData.qty}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="ccTableData.edit == true"
+                                                   v-model="ccTableData.qty"
+                                                   v-on:blur="ccTableData.edit=false;"
+                                                   @keyup.enter="ccTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="ccTableData.edit = true">
+                                            <div v-show="ccTableData.edit == false">
+                                                <p> {{ccTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="ccTableData.edit == true"
+                                                   v-model="ccTableData.lumpSum"
+                                                   v-on:blur="ccTableData.edit=false;"
+                                                   @keyup.enter="ccTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal2(ccTableData.qty,ccTableData.lumpSum)}} </p>
+                                            </div>
+
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{construction_costs_total}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -513,19 +697,65 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Project Management Fees
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
+                                    <tr v-for='(pmfTableData, index) in project_management_fees'>
+                                        <td>
+                                            <div>
+                                                <p> {{pmfTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="pmfTableData.edit = true">
+                                            <div v-show="pmfTableData.edit == false">
+                                                <p> {{pmfTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="pmfTableData.edit == true"
+                                                   v-model="pmfTableData.percentageValue"
+                                                   v-on:blur="pmfTableData.edit=false;"
+                                                   @keyup.enter="pmfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="pmfTableData.edit = true">
+                                            <div v-show="pmfTableData.edit == false">
+                                                <p> {{pmfTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="pmfTableData.edit == true"
+                                                   v-model="pmfTableData.lumpSum"
+                                                   v-on:blur="pmfTableData.edit=false;"
+                                                   @keyup.enter="pmfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{project_management_fees_total}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -543,19 +773,65 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Construction Cost Contingency
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
+                                    <tr v-for='(cccTableData, index) in construction_cost_contingency'>
+                                        <td>
+                                            <div>
+                                                <p> {{cccTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="cccTableData.edit = true">
+                                            <div v-show="cccTableData.edit == false">
+                                                <p> {{cccTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cccTableData.edit == true"
+                                                   v-model="cccTableData.percentageValue"
+                                                   v-on:blur="cccTableData.edit=false;"
+                                                   @keyup.enter="cccTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="cccTableData.edit = true">
+                                            <div v-show="cccTableData.edit == false">
+                                                <p> {{cccTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="cccTableData.edit == true"
+                                                   v-model="cccTableData.lumpSum"
+                                                   v-on:blur="cccTableData.edit=false;"
+                                                   @keyup.enter="cccTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{construction_cost_contingency_total}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -573,20 +849,72 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
-                                        SS professional fees
+                                    <th width="40%">
+                                        Sc professional fees
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lots
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(spfTableData, index) in ss_professional_fees'>
+                                        <td>
+                                            <div v-show="spfTableData.edit == false">
+                                                <p> {{spfTableData.label}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="spfTableData.edit == true"
+                                                   v-model="spfTableData.label"
+                                                   v-on:blur="spfTableData.edit=false;"
+                                                   @keyup.enter="spfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="spfTableData.edit = true">
+                                            <div>
+                                                <p> {{spfTableData.lots}} </p>
+                                            </div>
+                                            <!--<input class="c-input" v-show="spfTableData.edit == true"
+                                                   v-model="spfTableData.lots"
+                                                   v-on:blur="spfTableData.edit=false;"
+                                                   @keyup.enter="spfTableData.edit=false;"
+                                                   type="text">-->
+                                        </td>
+                                        <td @click="spfTableData.edit = true">
+                                            <div v-show="spfTableData.edit == false">
+                                                <p> {{spfTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="spfTableData.edit == true"
+                                                   v-model="spfTableData.lumpSum"
+                                                   v-on:blur="spfTableData.edit=false;"
+                                                   @keyup.enter="spfTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal2(spfTableData.lots,spfTableData.lumpSum)}} </p>
+                                            </div>
+
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{ss_professional_fees_total}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -603,20 +931,66 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
-                                        SS professional Fee Contingency
+                                    <th width="40%">
+                                        Sc professional Fee Contingency
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(spfcTableData, index) in ss_professional_fee_contingency'>
+                                        <td>
+                                            <div>
+                                                <p> {{spfcTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="spfcTableData.edit = true">
+                                            <div v-show="spfcTableData.edit == false">
+                                                <p> {{spfcTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="spfcTableData.edit == true"
+                                                   v-model="spfcTableData.percentageValue"
+                                                   v-on:blur="spfcTableData.edit=false;"
+                                                   @keyup.enter="spfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="spfcTableData.edit = true">
+                                            <div v-show="spfcTableData.edit == false">
+                                                <p> {{spfcTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="spfcTableData.edit == true"
+                                                   v-model="spfcTableData.lumpSum"
+                                                   v-on:blur="spfcTableData.edit=false;"
+                                                   @keyup.enter="spfcTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{ss_professional_fee_contingency_total}} </p>
+                                            </div>
+                                            <!--<input v-show="user.edit == true" v-model="user.subtotal"
+                                                   v-on:blur="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   @keyup.enter="user.edit=false; $emit('editModeVisible(index,true)')"
+                                                   type="text">-->
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -633,20 +1007,62 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Sales
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lots
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Price($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(salesTableData, index) in sales'>
+                                        <td>
+                                            <div>
+                                                <p> {{salesTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="salesTableData.edit = true">
+                                            <div>
+                                                <p> {{salesTableData.lots}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="salesTableData.edit = true">
+                                            <div v-show="salesTableData.edit == false">
+                                                <p> {{salesTableData.price}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="salesTableData.edit == true"
+                                                   v-model="salesTableData.price"
+                                                   v-on:blur="salesTableData.edit=false;"
+                                                   @keyup.enter="salesTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal2(salesTableData.lots,salesTableData.price)}} </p>
+                                            </div>
+
+                                        </td>
+                                        <!--<td>
+                                            <button v-if="user.editMode===true" class="btn"
+                                                    @click="editTableField(index,true)" style="float: right;"><i
+                                                    class="fa fa-edit"></i></button>
+                                            <button v-if="user.editMode===false" class="btn"
+                                                    @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-save"></i></button>
+                                            <button class="btn" @click="editTableField(index,false)" style="float: right;"><i
+                                                    class="fa fa-remove"></i></button>
+                                        </td>-->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{sales_total}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -663,20 +1079,57 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Marketing
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         %
                                     </th>
-                                    <th>
+                                    <th width="25%">
                                         Lump sum($)
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
                                     </th>
                                     </thead>
                                     <tbody>
+                                    <tr v-for='(marketingTableData, index) in marketing'>
+                                        <td>
+                                            <div>
+                                                <p> {{marketingTableData.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="marketingTableData.edit = true">
+                                            <div v-show="marketingTableData.edit == false">
+                                                <p> {{marketingTableData.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="marketingTableData.edit == true"
+                                                   v-model="marketingTableData.percentageValue"
+                                                   v-on:blur="marketingTableData.edit=false;"
+                                                   @keyup.enter="marketingTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="marketingTableData.edit = true">
+                                            <div v-show="marketingTableData.edit == false">
+                                                <p> {{marketingTableData.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="marketingTableData.edit == true"
+                                                   v-model="marketingTableData.lumpSum"
+                                                   v-on:blur="marketingTableData.edit=false;"
+                                                   @keyup.enter="marketingTableData.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{calculate_Subtotal(marketingTableData.percentageValue,marketingTableData.lumpSum,sales_total)}} </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{marketing_total}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -694,11 +1147,11 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="90%">
                                         Total projected cost
                                     </th>
-                                    <th>
-                                        $ 0.00
+                                    <th width="10%">
+                                        {{totalProjectedCost}}
                                     </th>
                                     </thead>
                                     <tbody>
@@ -718,11 +1171,11 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="90%">
                                         Total projected Revenue
                                     </th>
-                                    <th>
-                                        $ 0.00
+                                    <th width="10%">
+                                        {{totalProjectedRevenue}}
                                     </th>
                                     </thead>
                                     <tbody>
@@ -742,17 +1195,209 @@
                             <div class="table-responsive" style="background-color: white; padding:35px;">
                                 <table class="table align-middle table-bordered" style="background-color: white;">
                                     <thead>
-                                    <th>
+                                    <th width="40%">
                                         Finance Costs
                                     </th>
-                                    <th>
-                                        %
+                                    <th width="25%">
                                     </th>
-                                    <th>
-                                        Lump sum($)
+                                    <th width="25%">
                                     </th>
-                                    <th>
+                                    <th width="10%">
                                         Subtotal($)
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Borrowed_Money.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="finance_costs_Borrowed_Money.edit = true">
+                                            <div v-show="finance_costs_Borrowed_Money.edit == false">
+                                                <p> {{finance_costs_Borrowed_Money.percentageValue}}% </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Borrowed_Money.edit == true"
+                                                   v-model="finance_costs_Borrowed_Money.percentageValue"
+                                                   v-on:blur="finance_costs_Borrowed_Money.edit=false;"
+                                                   @keyup.enter="finance_costs_Borrowed_Money.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="finance_costs_Borrowed_Money.edit = true">
+                                            <div v-show="finance_costs_Borrowed_Money.edit == false">
+                                                <p> {{finance_costs_Borrowed_Money.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Borrowed_Money.edit == true"
+                                                   v-model="finance_costs_Borrowed_Money.lumpSum"
+                                                   v-on:blur="finance_costs_Borrowed_Money.edit=false;"
+                                                   @keyup.enter="finance_costs_Borrowed_Money.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{ finance_costs_Borrowed_Money_Subtotal}} </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Project_Length.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td @click="finance_costs_Project_Length.edit = true">
+                                            <div v-show="finance_costs_Project_Length.edit == false">
+                                                <p> {{finance_costs_Project_Length.months}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Project_Length.edit == true"
+                                                   v-model="finance_costs_Project_Length.months"
+                                                   v-on:blur="finance_costs_Project_Length.edit=false;"
+                                                   @keyup.enter="finance_costs_Project_Length.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p>  </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Interest_Rate.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="finance_costs_Interest_Rate.edit = true">
+                                            <div v-show="finance_costs_Interest_Rate.edit == false">
+                                                <p> {{finance_costs_Interest_Rate.interestRate}}% </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Interest_Rate.edit == true"
+                                                   v-model="finance_costs_Interest_Rate.interestRate"
+                                                   v-on:blur="finance_costs_Interest_Rate.edit=false;"
+                                                   @keyup.enter="finance_costs_Interest_Rate.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p>  </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Interest_Costs.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{ finance_costs_Interest_Costs_Subtotal}} </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Line_Fee.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="finance_costs_Line_Fee.edit = true">
+                                            <div v-show="finance_costs_Line_Fee.edit == false">
+                                                <p> {{finance_costs_Line_Fee.percentageValue}}% </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Line_Fee.edit == true"
+                                                   v-model="finance_costs_Line_Fee.percentageValue"
+                                                   v-on:blur="finance_costs_Line_Fee.edit=false;"
+                                                   @keyup.enter="finance_costs_Line_Fee.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="finance_costs_Line_Fee.edit = true">
+                                            <div v-show="finance_costs_Line_Fee.edit == false">
+                                                <p> {{finance_costs_Line_Fee.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Line_Fee.edit == true"
+                                                   v-model="finance_costs_Line_Fee.lumpSum"
+                                                   v-on:blur="finance_costs_Line_Fee.edit=false;"
+                                                   @keyup.enter="finance_costs_Line_Fee.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{ finance_costs_Line_Fee_Subtotal}} </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <p> {{finance_costs_Other_Finance_Fees.label}} </p>
+                                            </div>
+                                        </td>
+                                        <td @click="finance_costs_Other_Finance_Fees.edit = true">
+                                            <div v-show="finance_costs_Other_Finance_Fees.edit == false">
+                                                <p> {{finance_costs_Other_Finance_Fees.percentageValue}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Other_Finance_Fees.edit == true"
+                                                   v-model="finance_costs_Other_Finance_Fees.percentageValue"
+                                                   v-on:blur="finance_costs_Other_Finance_Fees.edit=false;"
+                                                   @keyup.enter="finance_costs_Other_Finance_Fees.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td @click="finance_costs_Other_Finance_Fees.edit = true">
+                                            <div v-show="finance_costs_Other_Finance_Fees.edit == false">
+                                                <p> {{finance_costs_Other_Finance_Fees.lumpSum}} </p>
+                                            </div>
+                                            <input class="c-input" v-show="finance_costs_Other_Finance_Fees.edit == true"
+                                                   v-model="finance_costs_Other_Finance_Fees.lumpSum"
+                                                   v-on:blur="finance_costs_Other_Finance_Fees.edit=false;"
+                                                   @keyup.enter="finance_costs_Other_Finance_Fees.edit=false;"
+                                                   type="text">
+                                        </td>
+                                        <td>
+                                            <div class="total">
+                                                <p> {{ finance_costs_Other_Finance_Fees_Subtotal}} </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="total">Total</td>
+                                        <td class="total">{{totalFinanceCosts}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="ofWhiteBackgroundColor" style="padding:35px">
+                            <div class="table-responsive" style="background-color: white; padding:35px;">
+                                <table class="table align-middle table-bordered" style="background-color: white;">
+                                    <thead>
+                                    <th width="90%">
+                                        Total Net profit
+                                    </th>
+                                    <th width="10%">
+                                        {{totalNetProfit}}
                                     </th>
                                     </thead>
                                     <tbody>
@@ -766,110 +1411,349 @@
         </div>
     </div>
 </div>
-</body>
 <script>
 
-var land_cost_table = new Vue({
 
-		el: '#land_cost_table',
-		mounted:function(){
-        this.editTableField() //method1 will execute at pageload
-        },
+var data_table = new Vue({
+
+		el: '#data_table',
 		data: {
-		    land_cost_total:0,
 		    land_cost_subtotal:0,
-			land_cost: [{label:'Estimated Land Price (Value)', percentageValue:'',lumpSum:1000000.00,subtotal:'', edit:false,editMode:true},
-			            {label:'Stamp Duty', percentageValue:'',lumpSum:100000.00,subtotal:'', edit:false,editMode:true},
-			            {label:'Real Estate Agent Fees', percentageValue:2,lumpSum:'',subtotal:'', edit:false,editMode:true},
-			            {label:'Legal Fees', percentageValue:'',lumpSum:10000.00,subtotal:'', edit:false,editMode:true}]},
-		methods: {
-		    editTableField: function(index, isBoolean) {
-                    this.land_cost_total = 0;
-					console.log('editTableField called',index,isBoolean);
-					//console.log('editTableField ',this.land_cost[index]);
-					land_cost_subtotal = this.land_cost[0].lumpSum;
-					for(cost of this.land_cost){
-					    if(cost.percentageValue == ''){
-                            cost.subtotal = cost.lumpSum;
-					    } else {
-					        cost.subtotal = cost.percentageValue*land_cost_subtotal/100;
-					    }
-					    this.land_cost_total = this.land_cost_total + +cost.subtotal;
-                    }
-			}
-		}
-	})
+			land_cost: [{label:'Estimated Land Price (Value)', percentageValue:'',lumpSum:1000000.00, edit:false,editMode:true},
+			            {label:'Stamp Duty', percentageValue:'',lumpSum:100000.00, edit:false,editMode:true},
+			            {label:'Real Estate Agent Fees', percentageValue:2,lumpSum:'', edit:false,editMode:true},
+			            {label:'Legal Fees', percentageValue:'',lumpSum:10000.00, edit:false,editMode:true}],
 
-var da_professional_fees_table = new Vue({
+			da_professional_fees: [{label:'Town Planning Report', lumpSum:10000.00, edit:false},
+			            {label:'Engineering Plans', lumpSum:40000.00, edit:false},
+			            {label:'Architectural Plans', lumpSum:7500, edit:false},
+			            {label:'Landscape Plans', lumpSum:2500.00, edit:false},
+			            {label:'Ecology report', lumpSum:12000.00, edit:false},
+			            {label:'Deatil Survey & Plan of Proposed Subdivision', lumpSum:6000.00, edit:false}],
 
-		el: '#da_professional_fees_table',
-		mounted:function(){
-        this.editTableField() //method1 will execute at pageload
-        },
-		data: {
-		    da_professional_fees_total:0,
-		    da_professional_fees_subtotal:0,
-			da_professional_fees: [{label:'Town Planning Report', lumpSum:6000000.00,subtotal:'', edit:false},
-			            {label:'Engineering Plans', lumpSum:900000.00,subtotal:'', edit:false},
-			            {label:'Architectural Plans', lumpSum:20000,subtotal:'', edit:false},
-			            {label:'Landscape Plans', lumpSum:50000.00,subtotal:'', edit:false},
-			            {label:'Ecology report', lumpSum:80000.00,subtotal:'', edit:false},
-			            {label:'Deatil Survey & Plan of Proposed Subdivision', lumpSum:10000.00,subtotal:'', edit:false}]},
+			da_professional_fee_contingency: [{label:'DA Professional Fee Contingency', percentageValue:2, lumpSum:0, edit:false}],
+
+			cc_professional_fees: [{label:'Civil Design', lumpSum:60000.00, edit:false},
+			            {label:'Electrical Design', lumpSum:15000.00, edit:false},
+			            {label:'NBN Design', lumpSum:5000, edit:false},
+			            {label:'Water and Sewer Design', lumpSum:40000.00, edit:false},
+			            {label:'Survey', lumpSum:20000.00, edit:false},
+			            {label:'Council Fees', lumpSum:40000.00, edit:false}],
+
+			cc_professional_fee_contingency: [{label:'CC Professional Fee Contingency', percentageValue:'', lumpSum:20000, edit:false}],
+
+			construction_costs: [{label:'Civil Construction Costs',qty:50, lumpSum:80000.00, edit:false},
+                        {label:'Residential Construction Type A',qty:5, lumpSum:405000.00, edit:false},
+                        {label:'Residential Construction Type B',qty:15, lumpSum:325000.00, edit:false},
+                        {label:'Residential Construction Type C',qty:30, lumpSum:285000.00, edit:false}],
+
+			project_management_fees: [{label:'Project Management Fees', percentageValue:2, lumpSum:0, edit:false}],
+
+			construction_cost_contingency: [{label:'Construction Cost Contingency', percentageValue:5, lumpSum:0, edit:false}],
+
+			ss_professional_fees: [{label:'Admin Cost Water',lots:'', lumpSum:0, edit:false},
+                        {label:'Admin Cost Energy',lots:'', lumpSum:0, edit:false},
+                        {label:'LRS Registration',lots:'', lumpSum:200.00, edit:false},
+                        {label:'Bio Banking Credits',lots:'', lumpSum:220000.00, edit:false},
+                        {label:'Council Application Fees',lots:50, lumpSum:20000.00, edit:false}],
+
+			ss_professional_fee_contingency: [{label:'SC Professional Fee Contingency', percentageValue:5, lumpSum:0, edit:false}],
+
+			sales: [{label:'Residential Construction Type A',lots:5, price:750000, edit:false},
+                        {label:'Residential Construction Type B',lots:15, price:650000, edit:false},
+                        {label:'Residential Construction Type C',lots:30, price:550000, edit:false}],
+
+			marketing: [{label:'Real Estate Agent Fees (Sales)', percentageValue:2, lumpSum:0, edit:false},
+			            {label:'Legal Fees (Sales)', percentageValue:'', lumpSum:10000, edit:false}],
+
+            finance_costs_Borrowed_Money_total:0,
+            finance_costs_Interest_Costs_total:0,
+            finance_costs_Line_Fee_total:0,
+            finance_costs_Other_Finance_Fees_total:0,
+			finance_costs_Borrowed_Money: {label:'Borrowed Money (% || $)',percentageValue:50, lumpSum:0, edit:false},
+			finance_costs_Project_Length: {label:'Project Length (Months)', months:24, edit:false},
+            finance_costs_Interest_Rate: {label:'Interest Rate (%)', interestRate:5.5, edit:false},
+            finance_costs_Interest_Costs: {label:'Interest Costs', edit:false},
+            finance_costs_Line_Fee: {label:'Line Fee',percentageValue:1, lumpSum:0, edit:false},
+            finance_costs_Other_Finance_Fees: {label:'Other Finance Fees',percentageValue:'', lumpSum:2000, edit:false}
+			},
+
 		methods: {
-		    addRow: function() {
+            addRow: function() {
 					this.da_professional_fees.push({label:'', lumpsum:'', subtotal:'', edit:true});
-					//this.land_cost.push({label:'',lumpsum:'',subtotal:'', edit:true, editMode:false});
 					console.log('add row called');
 			},
+
 			deleteRow(index){
 				this.da_professional_fees.splice(index,1);
 			},
-		    editTableField: function(index, isBoolean) {
-                    this.da_professional_fees_total = 0;
-					console.log('editTableField called',index,isBoolean);
-					//console.log('editTableField ',this.land_cost[index]);
-					da_professional_fees_subtotal = this.da_professional_fees[0].lumpSum;
+
+			calculate_Subtotal(percentageValue,lumpSum,baseValue){
+				var total = 0;
+					    if(percentageValue == ''){
+                            total = lumpSum;
+					    } else {
+					        total = percentageValue * baseValue / 100;
+					    }
+			    //finance_costs_Other_Finance_Fees_total = total;
+                return total;
+			},
+
+			calculate_Subtotal2(qtyPrice,lumpSum){
+				var total = 0;
+					    if(qtyPrice == ''){
+                            total = lumpSum;
+					    } else {
+					        total = qtyPrice*lumpSum;
+					    }
+			    //finance_costs_Other_Finance_Fees_total = total;
+                return total;
+			}
+		},
+		computed: {
+                // a computed getter
+                totalLandCost: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					land_cost_subtotal = this.land_cost[0].lumpSum;
+					for(cost of this.land_cost){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*land_cost_subtotal/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                da_professional_fees_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
 					for(cost of this.da_professional_fees){
 					    if(cost.lumpSum != 'NaN'){
-					        cost.subtotal = cost.lumpSum;
-					    this.da_professional_fees_total = this.da_professional_fees_total + +cost.subtotal;
+                            subtotal = cost.lumpSum;
+					        total = total + +subtotal;
 					    }
                     }
-			}
-		}
+
+                    return total;
+                },
+
+                da_professional_fee_contingency_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.da_professional_fee_contingency){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.da_professional_fees_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                cc_professional_fees_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.cc_professional_fees){
+					    if(cost.lumpSum != 'NaN'){
+                            subtotal = cost.lumpSum;
+					        total = total + +subtotal;
+					    }
+                    }
+
+                    return total;
+                },
+
+                cc_professional_fee_contingency_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.cc_professional_fee_contingency){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.cc_professional_fees_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                construction_costs_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.construction_costs){
+					    if(cost.lumpSum != 'NaN'){
+                            subtotal = cost.lumpSum*cost.qty;
+					        total = total + +subtotal;
+					    }
+                    }
+
+                    return total;
+                },
+
+                project_management_fees_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.project_management_fees){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.construction_costs_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                construction_cost_contingency_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.construction_cost_contingency){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.construction_costs_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                ss_professional_fees_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.ss_professional_fees){
+					    if(cost.lots == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+                            subtotal = cost.lumpSum*cost.lots;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                ss_professional_fee_contingency_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					ss_professional_fee_contingency_subtotal = this.ss_professional_fee_contingency[0].lumpSum;
+					for(cost of this.ss_professional_fee_contingency){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.ss_professional_fees_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                sales_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.sales){
+					    if(cost.lots == ''){
+                            subtotal = cost.price;
+					    } else {
+                            subtotal = cost.price*cost.lots;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                marketing_total: function () {
+                    var total = 0;
+                    var subtotal = 0;
+					for(cost of this.marketing){
+					    if(cost.percentageValue == ''){
+                            subtotal = cost.lumpSum;
+					    } else {
+					        subtotal = cost.percentageValue*this.sales_total/100;
+					    }
+					    total = total + +subtotal;
+                    }
+
+                    return total;
+                },
+
+                totalProjectedCost: function () {
+                    var projectedTotalCost = 0;
+                    projectedTotalCost =this.totalLandCost + this.da_professional_fees_total + this.da_professional_fee_contingency_total + this.cc_professional_fees_total +
+                                        this.cc_professional_fee_contingency_total + this.construction_costs_total + this.project_management_fees_total +
+                                        this.construction_cost_contingency_total + this.ss_professional_fees_total + this.ss_professional_fee_contingency_total + this.marketing_total;
+                    return projectedTotalCost;
+                },
+
+                totalProjectedRevenue: function () {
+                    return this.sales_total;
+                },
+
+                finance_costs_Borrowed_Money_Subtotal: function () {
+                    var total = 0;
+					    if(this.finance_costs_Borrowed_Money.percentageValue == ''){
+                            total = this.finance_costs_Borrowed_Money.lumpSum;
+					    } else {
+					        total = this.finance_costs_Borrowed_Money.percentageValue * this.totalProjectedCost/100;
+					    }
+                    return total;
+                },
+
+                finance_costs_Interest_Costs_Subtotal: function () {
+                    var total = 0;
+                    var yearlyInt = 0;
+                    yearlyInt =  1 + ((this.finance_costs_Interest_Rate.interestRate/100)/12);
+                    total = Math.round(((this.finance_costs_Borrowed_Money_Subtotal * Math.pow(yearlyInt, this.finance_costs_Project_Length.months))-this.finance_costs_Borrowed_Money_Subtotal)*100)/100;
+                    return total;
+                },
+
+                finance_costs_Line_Fee_Subtotal: function (){
+                    var total = 0;
+                            if(this.finance_costs_Line_Fee.percentageValue == ''){
+                                total = this.finance_costs_Line_Fee.lumpSum;
+                            } else {
+                                total = Math.round((this.finance_costs_Line_Fee.percentageValue * this.finance_costs_Interest_Costs_Subtotal/100)*100)/100;
+                            }
+                    return total;
+                },
+
+                finance_costs_Other_Finance_Fees_Subtotal: function (){
+                    var total = 0;
+                            if(this.finance_costs_Other_Finance_Fees.percentageValue == ''){
+                                total = this.finance_costs_Other_Finance_Fees.lumpSum;
+                            } else {
+                                total = Math.round((this.finance_costs_Other_Finance_Fees.percentageValue * this.finance_costs_Interest_Costs_Subtotal/100)*100)/100;
+                            }
+                    return total;
+                },
+                totalFinanceCosts: function () {
+                    var totalFinanceCost = 0;
+                    //console.log(this.finance_costs_Line_Fee_Subtotal , finance_costs_Other_Finance_Fees_Subtotal , this.finance_costs_Interest_Costs_Subtotal);
+                    totalFinanceCost = Math.round((this.finance_costs_Line_Fee_Subtotal + +this.finance_costs_Other_Finance_Fees_Subtotal + +this.finance_costs_Interest_Costs_Subtotal)*100)/100;
+                    return totalFinanceCost;
+                },
+
+                totalNetProfit: function () {
+                    var netProfit = 0;
+                    netProfit = Math.round(((this.sales_total - this.totalProjectedCost ) - this.totalFinanceCosts)*1000)/1000;
+                    return netProfit;
+                }
+            }
 	})
 
-/*var app = new Vue({
-		el: '#app',
-		data: {
-			users:[],
-
-			land_cost: [{DAname:'test', lumpsum:'testsum',subtotal:'testsub', edit:false,editMode:true}]
-		},
-		methods: {
-			addRow: function() {
-					this.users.push({DAname:'',lumpsum:'',subtotal:''});
-					this.land_cost.push({DAname:'',lumpsum:'',subtotal:'', edit:true, editMode:false});
-					console.log('add row called');
-			},
-			deleteRow(index){
-				this.land_cost.splice(index,1);
-			},
-			editModeVisible(index, e){
-
-				console.log('index ',index);
-
-				this.land_cost[index].editMode = !e;
-				this.land_cost[index].edit = e;
-
-			}
-		}
-	})*/
-
-
-
-
 </script>
+</body>
 
 <style>
     .c-input {
@@ -879,8 +1763,6 @@ var da_professional_fees_table = new Vue({
     .total{
         font-weight: bold;
     }
-
 </style>
-
 
 </html>
